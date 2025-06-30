@@ -55,19 +55,19 @@ void MainFrame::mostrarSeparador() {
 
 void MainFrame::mostrarMenu() {
     mostrarTitulo();
-    std::cout << "\n📋 MENÚ PRINCIPAL:\n\n";
-    std::cout << "1️⃣  Ingresar nuevo artículo\n";
-    std::cout << "2️⃣  Mostrar equipos médicos por marca y área\n";
-    std::cout << "3️⃣  Mostrar artículos dañados por tipo\n";
-    std::cout << "4️⃣  Calcular costos por categoría\n";
-    std::cout << "5️⃣  Mostrar costos más alto y más bajo\n";
-    std::cout << "6️⃣  Técnico con más equipos asignados\n";
-    std::cout << "7️⃣  Valores con plus para mobiliario\n";
-    std::cout << "8️⃣  Mostrar todos los artículos\n";
-    std::cout << "9️⃣  Buscar artículo por código\n";
-    std::cout << "🔟  Mostrar estadísticas generales\n";
-    std::cout << "1️⃣1️⃣ Cargar datos de prueba\n";
-    std::cout << "0️⃣  Salir\n";
+    std::cout << "\n[*] MENU PRINCIPAL:\n\n";
+    std::cout << "1.  Ingresar nuevo articulo\n";
+    std::cout << "2.  Mostrar equipos medicos por marca y area\n";
+    std::cout << "3.  Mostrar articulos danados por tipo\n";
+    std::cout << "4.  Calcular costos por categoria\n";
+    std::cout << "5.  Mostrar costos mas alto y mas bajo\n";
+    std::cout << "6.  Tecnico con mas equipos asignados\n";
+    std::cout << "7.  Valores con plus para mobiliario\n";
+    std::cout << "8.  Mostrar todos los articulos\n";
+    std::cout << "9.  Buscar articulo por codigo\n";
+    std::cout << "10. Mostrar estadisticas generales\n";
+    std::cout << "11. Cargar datos de prueba\n";
+    std::cout << "0.  Salir\n";
     mostrarSeparador();
 }
 
