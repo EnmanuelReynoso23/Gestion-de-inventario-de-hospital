@@ -43,9 +43,9 @@ private:
     // Validaciones
     bool validarCodigo(const std::string& codigo);
     bool validarFecha(const std::string& fecha);
-    
+
 public:
-    MainFrame();
+    MainFrame() = default;
     ~MainFrame() = default;
     
     void ejecutar();

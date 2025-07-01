@@ -1,3 +1,10 @@
+/**
+ * @file mobiliario_clinico.hpp
+ * @brief Clinical furniture class declaration
+ * @author Medical Inventory Team
+ * @date 2025
+ */
+
 #ifndef MOBILIARIO_CLINICO_HPP
 #define MOBILIARIO_CLINICO_HPP
 
@@ -19,22 +26,33 @@ private:
     static const double PLUS_QUIROFANO;
 
 public:
-    // Constructor
+    // Type aliases for new interface
+    using ArticleStatus = Articulo::ArticleStatus;
+    using ArticleType = Articulo::ArticleType;
+
+    // Constructor - updated to use new enum names
     MobiliarioClinico(const std::string& codigo, const std::string& fechaIngreso,
-                      EstadoArticulo estado, double costoUnitario, 
+                      ArticleStatus estado, double costoUnitario, 
                       const std::string& material, AreaUbicacion area);
     
     // Getters específicos
-    std::string getMaterial() const { return material; }
+    const std::string& getMaterial() const { return material; }
     AreaUbicacion getAreaUbicacion() const { return areaUbicacion; }
     
     // Setters específicos
-    void setMaterial(const std::string& nuevoMaterial) { material = nuevoMaterial; }
+    void setMaterial(const std::string& nuevoMaterial);
     void setAreaUbicacion(AreaUbicacion area) { areaUbicacion = area; }
     
-    // Métodos heredados
-    std::string getInformacion() const override;
-    double calcularCostoTotal() const override;
+    // New interface methods (override virtual methods from base)
+    std::string GetDetailedInfo() const override;
+    double CalculateTotalCost() const override;
+    
+    // Legacy methods for compatibility (deprecated)
+    [[deprecated("Use GetDetailedInfo() instead")]]
+    std::string getInformacion() const;
+    
+    [[deprecated("Use CalculateTotalCost() instead")]]
+    double calcularCostoTotal() const;
     
     // Métodos específicos
     double calcularPlusPorArea() const;

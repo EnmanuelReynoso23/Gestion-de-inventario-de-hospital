@@ -1,18 +1,24 @@
+
 #include "../include/mobiliario_clinico.hpp"
 #include <sstream>
 #include <iomanip>
+#include <stdexcept>
 
 // Definición de constantes estáticas
 const double MobiliarioClinico::PLUS_CONSULTA = 200.0;
 const double MobiliarioClinico::PLUS_EMERGENCIA = 300.0;
 const double MobiliarioClinico::PLUS_QUIROFANO = 500.0;
 
-// Constructor
+// Constructor con validación básica
 MobiliarioClinico::MobiliarioClinico(const std::string& codigo, const std::string& fechaIngreso,
                                      EstadoArticulo estado, double costoUnitario, 
                                      const std::string& material, AreaUbicacion area)
     : Articulo(codigo, TipoArticulo::MOBILIARIO_CLINICO, fechaIngreso, estado, costoUnitario),
       material(material), areaUbicacion(area) {
+    if (codigo.empty()) throw std::invalid_argument("El código no puede estar vacío.");
+    if (fechaIngreso.empty()) throw std::invalid_argument("La fecha de ingreso no puede estar vacía.");
+    if (costoUnitario < 0) throw std::invalid_argument("El costo unitario no puede ser negativo.");
+    if (material.empty()) throw std::invalid_argument("El material no puede estar vacío.");
 }
 
 // Implementación del método getInformacion
@@ -34,6 +40,7 @@ std::string MobiliarioClinico::getInformacion() const {
 
 // Implementación del método calcularCostoTotal
 double MobiliarioClinico::calcularCostoTotal() const {
+    // Siempre retorna el valor total con plus
     return calcularValorConPlus();
 }
 
@@ -46,6 +53,7 @@ double MobiliarioClinico::calcularPlusPorArea() const {
 double MobiliarioClinico::calcularValorConPlus() const {
     return costoUnitario + calcularPlusPorArea();
 }
+
 
 // Funciones auxiliares estáticas
 std::string MobiliarioClinico::areaUbicacionToString(AreaUbicacion area) {
@@ -69,7 +77,7 @@ AreaUbicacion MobiliarioClinico::stringToAreaUbicacion(const std::string& str) {
     } else if (str == "Quirófano" || str == "QUIROFANO") {
         return AreaUbicacion::QUIROFANO;
     }
-    return AreaUbicacion::CONSULTA; // valor por defecto
+    throw std::invalid_argument("Área de ubicación inválida: " + str);
 }
 
 double MobiliarioClinico::getPlusPorArea(AreaUbicacion area) {
@@ -81,6 +89,6 @@ double MobiliarioClinico::getPlusPorArea(AreaUbicacion area) {
         case AreaUbicacion::QUIROFANO:
             return PLUS_QUIROFANO;
         default:
-            return 0.0;
+            throw std::invalid_argument("Área de ubicación inválida (enum)");
     }
 }

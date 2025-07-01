@@ -1,3 +1,10 @@
+/**
+ * @file equipo_medico.hpp
+ * @brief Medical equipment class declaration
+ * @author Medical Inventory Team
+ * @date 2025
+ */
+
 #ifndef EQUIPO_MEDICO_HPP
 #define EQUIPO_MEDICO_HPP
 
@@ -25,25 +32,36 @@ private:
     AreaUso areaUso;
 
 public:
-    // Constructor
+    // Type aliases for new interface
+    using ArticleStatus = Articulo::ArticleStatus;
+    using ArticleType = Articulo::ArticleType;
+
+    // Constructor - updated to use new enum names
     EquipoMedico(const std::string& codigo, const std::string& fechaIngreso,
-                 EstadoArticulo estado, double costoUnitario, MarcaEquipo marca,
+                 ArticleStatus estado, double costoUnitario, MarcaEquipo marca,
                  int vidaUtil, const std::string& tecnico, AreaUso area);
     
     // Getters específicos
     MarcaEquipo getMarca() const { return marca; }
     int getVidaUtilAnios() const { return vidaUtilAnios; }
-    std::string getTecnicoAsignado() const { return tecnicoAsignado; }
+    const std::string& getTecnicoAsignado() const { return tecnicoAsignado; }
     AreaUso getAreaUso() const { return areaUso; }
     
     // Setters específicos
-    void setTecnicoAsignado(const std::string& tecnico) { tecnicoAsignado = tecnico; }
+    void setTecnicoAsignado(const std::string& tecnico);
     void setAreaUso(AreaUso area) { areaUso = area; }
     void setVidaUtilAnios(int anios) { vidaUtilAnios = anios; }
     
-    // Métodos heredados
-    std::string getInformacion() const override;
-    double calcularCostoTotal() const override;
+    // New interface methods (override virtual methods from base)
+    std::string GetDetailedInfo() const override;
+    double CalculateTotalCost() const override;
+    
+    // Legacy methods for compatibility (deprecated)
+    [[deprecated("Use GetDetailedInfo() instead")]]
+    std::string getInformacion() const;
+    
+    [[deprecated("Use CalculateTotalCost() instead")]]
+    double calcularCostoTotal() const;
     
     // Funciones auxiliares estáticas
     static std::string marcaToString(MarcaEquipo marca);
@@ -53,6 +71,7 @@ public:
     
     // Métodos específicos
     double calcularDepreciacion() const;
+    double calcularAniosTranscurridos() const;
     bool necesitaMantenimiento() const;
 };
 

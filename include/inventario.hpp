@@ -65,6 +65,18 @@ public:
     // Validación
     bool existeCodigo(const std::string& codigo) const;
     
+    // Métodos adicionales de mejora
+    std::vector<EquipoMedico*> obtenerEquiposQueNecesitanMantenimiento() const;
+    std::map<std::string, double> calcularValorTotalPorTecnico() const;
+    std::vector<Articulo*> obtenerArticulosRecientes(int dias = 30) const;
+    double calcularDepreciacionTotal() const;
+    std::map<AreaUso, int> contarEquiposPorArea() const;
+    std::map<AreaUbicacion, int> contarMobiliarioPorArea() const;
+    
+    // Reportes avanzados
+    void generarReporteCompleto(const std::string& nombreArchivo) const;
+    std::string generarResumenEjecutivo() const;
+    
     // Persistencia (opcional para futuras mejoras)
     void guardarEnArchivo(const std::string& nombreArchivo) const;
     void cargarDeArchivo(const std::string& nombreArchivo);

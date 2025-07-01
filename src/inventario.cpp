@@ -17,7 +17,7 @@ Inventario::agruparEquiposPorMarcaYArea() const {
     std::map<std::pair<MarcaEquipo, AreaUso>, std::vector<EquipoMedico*>> agrupados;
     
     for (const auto& articulo : articulos) {
-        if (articulo->getTipo() == TipoArticulo::EQUIPO_MEDICO) {
+        if (articulo->getTipo() == MedicalInventory::Domain::ArticleType::MEDICAL_EQUIPMENT) {
             EquipoMedico* equipo = dynamic_cast<EquipoMedico*>(articulo.get());
             if (equipo) {
                 std::pair<MarcaEquipo, AreaUso> clave = {equipo->getMarca(), equipo->getAreaUso()};
@@ -34,7 +34,7 @@ std::vector<Articulo*> Inventario::obtenerArticulosDanados() const {
     std::vector<Articulo*> danados;
     
     for (const auto& articulo : articulos) {
-        if (articulo->getEstado() == EstadoArticulo::DANADO) {
+        if (articulo->getEstado() == MedicalInventory::Domain::ArticleStatus::DAMAGED) {
             danados.push_back(articulo.get());
         }
     }
@@ -42,11 +42,11 @@ std::vector<Articulo*> Inventario::obtenerArticulosDanados() const {
     return danados;
 }
 
-std::map<TipoArticulo, std::vector<Articulo*>> Inventario::agruparDanadosPorTipo() const {
-    std::map<TipoArticulo, std::vector<Articulo*>> danadosPorTipo;
+std::map<MedicalInventory::Domain::ArticleType, std::vector<Articulo*>> Inventario::agruparDanadosPorTipo() const {
+    std::map<MedicalInventory::Domain::ArticleType, std::vector<Articulo*>> danadosPorTipo;
     
     for (const auto& articulo : articulos) {
-        if (articulo->getEstado() == EstadoArticulo::DANADO) {
+        if (articulo->getEstado() == MedicalInventory::Domain::ArticleStatus::DAMAGED) {
             danadosPorTipo[articulo->getTipo()].push_back(articulo.get());
         }
     }
@@ -55,7 +55,7 @@ std::map<TipoArticulo, std::vector<Articulo*>> Inventario::agruparDanadosPorTipo
 }
 
 // d) Calcular costo total por categoría
-double Inventario::calcularCostoTotalPorCategoria(TipoArticulo tipo) const {
+double Inventario::calcularCostoTotalPorCategoria(MedicalInventory::Domain::ArticleType tipo) const {
     double total = 0.0;
     
     for (const auto& articulo : articulos) {
@@ -67,10 +67,10 @@ double Inventario::calcularCostoTotalPorCategoria(TipoArticulo tipo) const {
     return total;
 }
 
-std::map<TipoArticulo, double> Inventario::calcularCostosPorCategoria() const {
-    std::map<TipoArticulo, double> costos;
-    costos[TipoArticulo::EQUIPO_MEDICO] = calcularCostoTotalPorCategoria(TipoArticulo::EQUIPO_MEDICO);
-    costos[TipoArticulo::MOBILIARIO_CLINICO] = calcularCostoTotalPorCategoria(TipoArticulo::MOBILIARIO_CLINICO);
+std::map<MedicalInventory::Domain::ArticleType, double> Inventario::calcularCostosPorCategoria() const {
+    std::map<MedicalInventory::Domain::ArticleType, double> costos;
+    costos[MedicalInventory::Domain::ArticleType::MEDICAL_EQUIPMENT] = calcularCostoTotalPorCategoria(MedicalInventory::Domain::ArticleType::MEDICAL_EQUIPMENT);
+    costos[MedicalInventory::Domain::ArticleType::CLINICAL_FURNITURE] = calcularCostoTotalPorCategoria(MedicalInventory::Domain::ArticleType::CLINICAL_FURNITURE);
     return costos;
 }
 
@@ -132,7 +132,7 @@ std::map<std::string, int> Inventario::contarEquiposPorTecnico() const {
     std::map<std::string, int> conteo;
     
     for (const auto& articulo : articulos) {
-        if (articulo->getTipo() == TipoArticulo::EQUIPO_MEDICO) {
+        if (articulo->getTipo() == MedicalInventory::Domain::ArticleType::MEDICAL_EQUIPMENT) {
             EquipoMedico* equipo = dynamic_cast<EquipoMedico*>(articulo.get());
             if (equipo) {
                 conteo[equipo->getTecnicoAsignado()]++;
@@ -148,7 +148,7 @@ std::vector<std::pair<MobiliarioClinico*, double>> Inventario::calcularValoresCo
     std::vector<std::pair<MobiliarioClinico*, double>> valoresConPlus;
     
     for (const auto& articulo : articulos) {
-        if (articulo->getTipo() == TipoArticulo::MOBILIARIO_CLINICO) {
+        if (articulo->getTipo() == MedicalInventory::Domain::ArticleType::CLINICAL_FURNITURE) {
             MobiliarioClinico* mobiliario = dynamic_cast<MobiliarioClinico*>(articulo.get());
             if (mobiliario) {
                 valoresConPlus.emplace_back(mobiliario, mobiliario->calcularValorConPlus());
@@ -171,7 +171,7 @@ std::vector<Articulo*> Inventario::obtenerTodosLosArticulos() const {
 std::vector<EquipoMedico*> Inventario::obtenerEquiposMedicos() const {
     std::vector<EquipoMedico*> equipos;
     for (const auto& articulo : articulos) {
-        if (articulo->getTipo() == TipoArticulo::EQUIPO_MEDICO) {
+        if (articulo->getTipo() == MedicalInventory::Domain::ArticleType::MEDICAL_EQUIPMENT) {
             EquipoMedico* equipo = dynamic_cast<EquipoMedico*>(articulo.get());
             if (equipo) {
                 equipos.push_back(equipo);
@@ -184,7 +184,7 @@ std::vector<EquipoMedico*> Inventario::obtenerEquiposMedicos() const {
 std::vector<MobiliarioClinico*> Inventario::obtenerMobiliario() const {
     std::vector<MobiliarioClinico*> mobiliario;
     for (const auto& articulo : articulos) {
-        if (articulo->getTipo() == TipoArticulo::MOBILIARIO_CLINICO) {
+        if (articulo->getTipo() == MedicalInventory::Domain::ArticleType::CLINICAL_FURNITURE) {
             MobiliarioClinico* mob = dynamic_cast<MobiliarioClinico*>(articulo.get());
             if (mob) {
                 mobiliario.push_back(mob);
@@ -214,7 +214,7 @@ std::vector<Articulo*> Inventario::filtrarPorEstado(EstadoArticulo estado) const
     return filtrados;
 }
 
-std::vector<Articulo*> Inventario::filtrarPorTipo(TipoArticulo tipo) const {
+std::vector<Articulo*> Inventario::filtrarPorTipo(MedicalInventory::Domain::ArticleType tipo) const {
     std::vector<Articulo*> filtrados;
     for (const auto& articulo : articulos) {
         if (articulo->getTipo() == tipo) {
@@ -225,7 +225,7 @@ std::vector<Articulo*> Inventario::filtrarPorTipo(TipoArticulo tipo) const {
 }
 
 // Estadísticas
-size_t Inventario::obtenerCantidadPorTipo(TipoArticulo tipo) const {
+size_t Inventario::obtenerCantidadPorTipo(MedicalInventory::Domain::ArticleType tipo) const {
     return std::count_if(articulos.begin(), articulos.end(),
         [tipo](const std::unique_ptr<Articulo>& articulo) {
             return articulo->getTipo() == tipo;
